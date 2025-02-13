@@ -9,6 +9,9 @@
 #include <numeric>
 #include <fstream>
 #include "deck.h"
+#include "trainer.h"
+#include "energy.h"
+#include "pokemon.h"
 
 using namespace std;
 const std::string FILENAME = "save.txt";
@@ -23,7 +26,7 @@ int main()
    bool keep_asking = true;
    while (keep_asking)
    {
-      int choice = 9;
+      int choice = 99;
       cout << endl;
       cout << "Account Menu:\n"
          << "0. Quit Program\n"
@@ -34,6 +37,8 @@ int main()
          << "5. Find deck by ID\n"
          << "6. Remove deck\n"
          << "7. Display cards from deck\n"
+         << "8. Load decks\n"
+         << "9. Save decks\n"
          << "Your choice: ";
       cin >> choice;
       cout << endl;
@@ -148,25 +153,58 @@ int main()
          ifstream file(FILENAME);
          if (file.is_open())
          {
+            bool is_first_deck = true;
+            Deck current_deck;
             string line;
             while (std::getline(file, line))
             {
-               // using printf() in all tests for consistency
-               printf("%s", line.c_str());
+               std::string first_element = line.substr(0, line.find("#"));
+               if (first_element == "Deck")
+               {
+                  if (!is_first_deck)
+                  {
+                     decks.push_back(current_deck);
+                     current_deck = Deck();
+                  }
+                  current_deck.decode(line);
+                  is_first_deck = false;
+               }
+               else if (first_element == "Trainer")
+               {
+                  std::shared_ptr<Card> trainer = std::make_shared<Trainer>(TRAINER);
+                  trainer->decode(line);
+                  current_deck.add_card(trainer);
+               }
+               else if (first_element == "Energy")
+               {
+                  std::shared_ptr<Card> energy = std::make_shared<Energy>(ENERGY);
+                  energy->decode(line);
+                  current_deck.add_card(energy);
+               }
+               else if (first_element == "Pokemon")
+               {
+                  std::shared_ptr<Card> pokemon = std::make_shared<Pokemon>(POKEMON);
+                  pokemon->decode(line);
+                  current_deck.add_card(pokemon);
+               }
             }
+            decks.push_back(current_deck);
             file.close();
          }
+         break;
       }
       case 9:
       {
-         ofstream file(FILENAME);
-         if (file.is_open())
+         ofstream save_file(FILENAME);
+         if (save_file.is_open())
          {
-            for_each(decks.begin(), decks.end(), [](auto& deck)
+            for_each(decks.begin(), decks.end(), [&save_file](auto& deck)
                {
-                  deck.display();
+                  save_file << deck.encode();
                });
          }
+         save_file.close();
+         break;
       }
       default:
          cout << "Invalid option, try again." << endl;

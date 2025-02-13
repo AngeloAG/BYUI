@@ -8,6 +8,7 @@
 #include "elementalTypeEnum.h"
 #include "pokemon.h"
 #include "energy.h"
+#include "utils.h"
 
 int Deck::available_id = 0;
 
@@ -23,7 +24,7 @@ Deck::Deck(std::string name) : id{ Deck::available_id }, name{name}, cards{}
 
 void Deck::add_card(std::shared_ptr<Card> card) 
 {
-      cards.push_back(card);
+   cards.push_back(card);
 }
 
 void Deck::remove_card(std::string name) 
@@ -43,7 +44,8 @@ int Deck::count(CardType type) const
 { 
    int total = accumulate(cards.begin(), cards.end(), 0, [type](int accumulator, const std::shared_ptr<Card>& card)
       {
-         return accumulator + card->is_same_type(type) ? card->get_amount() : 0;
+         int amount = card->is_same_type(type) ? card->get_amount() : 0;
+         return accumulator + amount;
       });
    return total; 
 }
@@ -130,7 +132,21 @@ bool Deck::is_same_id(int id) const
    return this->id == id;
 }
 
-std::string Deck::get_encoding() const
+std::string Deck::encode() const
 {
-   return "";
+   std::string encoding = "#Deck#" + name + "\n";
+   for_each(cards.begin(), cards.end(), [&encoding](auto& card)
+      {
+         encoding += card->encode() + "\n";
+      });
+   return encoding;
+}
+
+void Deck::decode(std::string encoding)
+{
+   //          Name
+   // Example: Deck#Veracruz
+   std::list<std::string> parts = split(encoding, '#');
+   std::list<std::string>::iterator it = parts.begin();
+   name = *(++it);
 }

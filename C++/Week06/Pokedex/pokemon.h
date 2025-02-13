@@ -18,4 +18,6 @@ public:
    Pokemon(std::string name, int amount, int hp, std::string ability, std::shared_ptr<Attack> attack, ElementalType elemental_type);
    virtual void display() const;
    virtual void prompt_for_information();
+   virtual std::string encode() const;
+   virtual void decode(std::string encoding);
 };

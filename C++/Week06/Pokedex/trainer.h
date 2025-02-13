@@ -12,4 +12,6 @@ public:
    Trainer(std::string name, int amount, std::string effect, TrainerType trainer_type);
    virtual void display() const;
    virtual void prompt_for_information();
+   virtual std::string encode() const;
+   virtual void decode(std::string encoding);
 };

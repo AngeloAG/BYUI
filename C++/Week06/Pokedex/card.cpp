@@ -31,3 +31,8 @@ void Card::prompt_for_information()
    std::cin >> amount;
    std::cout << std::endl;
 }
+
+std::string Card::encode() const
+{
+   return cardTypeToString(type) + "#" + name + "#" + std::to_string(amount);
+}

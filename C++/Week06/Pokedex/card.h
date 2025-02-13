@@ -17,4 +17,6 @@ public:
    bool is_same_type(CardType type) const;
    int get_amount() const;
    virtual void prompt_for_information();
+   virtual std::string encode() const;
+   virtual void decode(std::string encoding) = 0;
 };
