@@ -2,3 +2,6 @@ Deck#Veracruz
 Trainer#Kofu#4#Supporter#Shuffle your hand
 Pokemon#Dondonzo#4#160#Deep Dive#Water#Revenge#10#2#Do 50 more damage for each tatsugiri
 Energy#Water Energy#10#Water
+Energy#Fire Energy#5#Fire
+Deck#Lugia VSTAR
+Pokemon#LugiaV#4#210#Draw 3 cards#Colorless#Double Vortex#50#4#Discard one card, draw two

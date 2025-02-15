@@ -19,4 +19,6 @@ public:
    virtual void prompt_for_information();
    virtual std::string encode() const;
    virtual void decode(std::string encoding) = 0;
+   void add(int amount);
+   void remove(int amount);
 };

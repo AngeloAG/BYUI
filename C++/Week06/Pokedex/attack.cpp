@@ -31,7 +31,7 @@ void Attack::prompt_for_information()
    std::cout << std::endl;
 
    std::cin.ignore();
-   std::cout << "Enter the description (optional): ";
+   std::cout << "Enter the description: ";
    getline(std::cin, description);
    std::cout << std::endl;
 }

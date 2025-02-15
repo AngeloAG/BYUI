@@ -35,7 +35,8 @@ void Pokemon::prompt_for_information()
    std::cin >> hp;
    std::cout << std::endl;
 
-   std::cout << "Enter the ability (optional): ";
+   std::cin.ignore();
+   std::cout << "Enter the ability: ";
    getline(std::cin, ability);
    std::cout << std::endl;
 

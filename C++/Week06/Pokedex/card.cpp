@@ -36,3 +36,14 @@ std::string Card::encode() const
 {
    return cardTypeToString(type) + "#" + name + "#" + std::to_string(amount);
 }
+
+void Card::add(int amount)
+{
+   this->amount += amount;
+}
+
+void Card::remove(int amount)
+{
+   if(this->amount > 0)
+      this->amount -= amount;
+}

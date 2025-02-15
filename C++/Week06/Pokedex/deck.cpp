@@ -35,9 +35,14 @@ void Deck::remove_card(std::string name)
       });
 
    if (card_to_remove != cards.end())
+   {
       cards.erase(card_to_remove, cards.end());
+      std::cout << "Card not removed." << std::endl;
+   }
    else
+   {
       std::cout << "Card not found." << std::endl;
+   }
 }
 
 int Deck::count(CardType type) const 
@@ -134,7 +139,7 @@ bool Deck::is_same_id(int id) const
 
 std::string Deck::encode() const
 {
-   std::string encoding = "#Deck#" + name + "\n";
+   std::string encoding = "Deck#" + name + "\n";
    for_each(cards.begin(), cards.end(), [&encoding](auto& card)
       {
          encoding += card->encode() + "\n";

@@ -33,12 +33,14 @@ int main()
          << "1. Display  decks\n"
          << "2. Add a card to a deck\n"
          << "3. Remove card from deck\n"
-         << "4. Add new deck\n"
-         << "5. Find deck by ID\n"
-         << "6. Remove deck\n"
-         << "7. Display cards from deck\n"
-         << "8. Load decks\n"
-         << "9. Save decks\n"
+         << "4. Add to card in deck\n"
+         << "5. Remove from card in deck\n"
+         << "6. Add new deck\n"
+         << "7. Find deck by ID\n"
+         << "8. Remove deck\n"
+         << "9. Display cards from deck\n"
+         << "10. Load decks\n"
+         << "11. Save decks\n"
          << "Your choice: ";
       cin >> choice;
       cout << endl;
@@ -85,7 +87,8 @@ int main()
             cout << endl;
             string card_to_remove;
             std::cout << "Enter the card name to remove: ";
-            std::cin >> card_to_remove;
+            std::cin.ignore();
+            getline(std::cin, card_to_remove);
             std::cout << std::endl;
 
             deckIt->remove_card(card_to_remove);
@@ -98,12 +101,82 @@ int main()
       }
       case 4:
       {
+         int id_to_find = prompt_for_deck_id();
+         list<Deck>::iterator deckIt = find_deck(decks, id_to_find);
+         if (deckIt != decks.end())
+         {
+            cout << "Found deck: ";
+            deckIt->display();
+            cout << endl;
+            string card_to_add_to;
+            std::cout << "Enter the card name to add to: ";
+            std::cin.ignore();
+            getline(std::cin, card_to_add_to);
+            std::cout << std::endl;
+
+            std::list<std::shared_ptr<Card>>::iterator card = deckIt->find_card(card_to_add_to);
+            if (card->get() != nullptr)
+            {
+               int amount_to_add = 0;
+               std::cout << "Enter the amount to add: ";
+               std::cin >> amount_to_add;
+               if(amount_to_add >= 0) 
+                  card->get()->add(amount_to_add);
+            }
+            else
+            {
+               std::cout << "Card not found." << std::endl;
+            }
+         }
+         else
+         {
+            cout << "Deck not found." << endl;
+         }
+         break;
+      }
+      case 5:
+      {
+         int id_to_find = prompt_for_deck_id();
+         list<Deck>::iterator deckIt = find_deck(decks, id_to_find);
+         if (deckIt != decks.end())
+         {
+            cout << "Found deck: ";
+            deckIt->display();
+            cout << endl;
+            string card_to_remove_from;
+            std::cout << "Enter the card name to add to: ";
+            std::cin.ignore();
+            getline(std::cin, card_to_remove_from);
+            std::cout << std::endl;
+
+            std::list<std::shared_ptr<Card>>::iterator card = deckIt->find_card(card_to_remove_from);
+            if (card->get() != nullptr)
+            {
+               int amount_to_remove = 0;
+               std::cout << "Enter the amount to remove: ";
+               std::cin >> amount_to_remove;
+               if (amount_to_remove >= 0)
+                  card->get()->remove(amount_to_remove);
+            }
+            else
+            {
+               std::cout << "Card not found." << std::endl;
+            }
+         }
+         else
+         {
+            cout << "Deck not found." << endl;
+         }
+         break;
+      }
+      case 6:
+      {
          Deck new_deck;
          new_deck.prompt_for_information();
          decks.push_back(new_deck);
          break;
       }
-      case 5:
+      case 7:
       {
          int id_to_find = prompt_for_deck_id();
          list<Deck>::iterator deckIt = find_deck(decks, id_to_find);
@@ -119,7 +192,7 @@ int main()
          }
          break;
       }
-      case 6:
+      case 8:
       {
          int id_to_find = prompt_for_deck_id();
          auto decks_end = remove_if(decks.begin(), decks.end(), [id_to_find](auto& deck)
@@ -132,7 +205,7 @@ int main()
             cout << "Deck not found." << endl;
          break;
       }
-      case 7:
+      case 9:
       {
          int id_to_find = prompt_for_deck_id();
          list<Deck>::iterator deckIt = find_deck(decks, id_to_find);
@@ -148,7 +221,7 @@ int main()
          }
          break;
       }
-      case 8:
+      case 10:
       {
          ifstream file(FILENAME);
          if (file.is_open())
@@ -193,7 +266,7 @@ int main()
          }
          break;
       }
-      case 9:
+      case 11:
       {
          ofstream save_file(FILENAME);
          if (save_file.is_open())
